@@ -39,7 +39,10 @@ CASES = {"no_identity": dict(near=0.0, similarity=False, phase=0.0, rule="born")
          "peak_noise":  dict(near=0.0, similarity=True,  phase=PI,  rule="peak_noise"), # most likely heading + noise of fixed width
          "peak_width":  dict(near=0.0, similarity=True,  phase=PI,  rule="peak_width"), # most likely heading + noise as wide as the draw
          "peak_noid":   dict(near=0.0, similarity=False, phase=0.0, rule="peak"),        # the same two rules without identity
-         "peak_noise_noid": dict(near=0.0, similarity=False, phase=0.0, rule="peak_noise")}
+         "peak_noise_noid": dict(near=0.0, similarity=False, phase=0.0, rule="peak_noise"),
+         "mean_width":  dict(near=0.0, similarity=True,  phase=PI,  rule="mean_width"), # expected heading + noise as wide as the draw
+         "mean_width_noid": dict(near=0.0, similarity=False, phase=0.0, rule="mean_width"),
+         "ignore_other": dict(near=0.0, similarity=True, phase=0.0, rule="born", other_bearing=0.0)}  # model, other kinds' bearings given zero weight
 LABEL = {"no_identity": "no identity", "relational": "relational partners, no phase", "full": "full model",
          "nearest": "nearest partners", "nearest_no_identity": "nearest partners, no identity",
          "half_nearest": "half nearest, half relational",
@@ -48,8 +51,10 @@ LABEL = {"no_identity": "no identity", "relational": "relational partners, no ph
          "peak": "most likely heading taken (no draw)",
          "peak_noise": "most likely heading + noise of fixed width",
          "peak_width": "most likely heading + noise as wide as the draw",
-         "peak_noid": "most likely heading, no identity", "peak_noise_noid": "most likely heading + fixed noise, no identity"}
-TABLE1 = ["no_identity", "relational", "full", "nearest", "nearest_no_identity", "half_nearest"]
+         "peak_noid": "most likely heading, no identity", "peak_noise_noid": "most likely heading + fixed noise, no identity",
+         "mean_width": "expected heading + noise as wide as the draw", "mean_width_noid": "expected heading + matched noise, no identity",
+         "ignore_other": "relational partners, other kinds' bearings zero weight"}
+TABLE1 = ["no_identity", "relational", "ignore_other", "full", "nearest", "nearest_no_identity", "half_nearest"]
 SHOW = ["no_identity", "relational", "full"]            # drawn in the figures and the video
 COLOR = {"no_identity": "#8a8a86", "relational": "#eda100", "full": "#4a3aa7"}
 DASH = {"no_identity": (0, (4, 2)), "relational": "-", "full": "-"}
@@ -181,7 +186,7 @@ def step(X, theta, mem, kind, S, case, rng, grid, p):
         states = np.stack([np.cos(direction), np.sin(direction)], axis=2) @ (half * np.stack([cos_d, sin_d]))
         states -= half
         np.exp(states, out=states)                                     # <theta|d> = exp[(lam/2)(cos(theta - d) - 1)]
-        if case["rule"] in ("born", "peak", "peak_noise", "peak_width"):                                     # amplitudes added, then squared
+        if case["rule"] in ("born", "peak", "peak_noise", "peak_width", "mean_width"):                                     # amplitudes added, then squared
             percept = np.matmul(amplitude[:, None, :], states)[:, 0, :]
             percept /= np.linalg.norm(percept, axis=1, keepdims=True)
             mem = percept if mem is None else np.sqrt(p["mu"]) * mem + np.sqrt(1 - p["mu"]) * percept
@@ -205,6 +210,14 @@ def step(X, theta, mem, kind, S, case, rng, grid, p):
             kap = np.where(Rbar < 0.53, 2 * Rbar + Rbar**3 + 5 * Rbar**5 / 6,
                   np.where(Rbar < 0.85, -0.4 + 1.39 * Rbar + 0.43 / (1 - Rbar), 1 / (Rbar**3 - 4 * Rbar**2 + 3 * Rbar)))
             theta = rng.vonmises(dirs[prob.argmax(1)], kap) % (2 * np.pi)
+        elif case["rule"] == "mean_width":                             # expected heading + noise as wide as |Psi|^2
+            pick = None
+            q = prob / prob.sum(1, keepdims=True)
+            C_, S_ = q @ np.cos(dirs), q @ np.sin(dirs)
+            Rbar = np.clip(np.hypot(C_, S_), 1e-6, 1 - 1e-9)
+            kap = np.where(Rbar < 0.53, 2 * Rbar + Rbar**3 + 5 * Rbar**5 / 6,
+                  np.where(Rbar < 0.85, -0.4 + 1.39 * Rbar + 0.43 / (1 - Rbar), 1 / (Rbar**3 - 4 * Rbar**2 + 3 * Rbar)))
+            theta = rng.vonmises(np.arctan2(S_, C_), kap) % (2 * np.pi)
         else:
             cdf = np.cumsum(prob, axis=1)
             pick = np.minimum((cdf < rng.random((N, 1)) * cdf[:, -1:]).sum(1), len(dirs) - 1)

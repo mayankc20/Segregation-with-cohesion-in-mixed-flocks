@@ -1,8 +1,8 @@
 # Mixed flocks in open space
 
-Code for the paper *Segregation with cohesion: a quantum-inspired perceptual model of mixed flocks in open space*, by Mayank Chaurasiya, Ayush Agrawal, Chirayush Mohanty and Laxmidhar Behera (Indian Institute of Technology Mandi and Indian Institute of Technology Kanpur).
+Code for the paper *Segregation with cohesion in mixed flocks from interfering perceptual cues*, by Mayank Chaurasiya, Ayush Agrawal, Chirayush Mohanty and Laxmidhar Behera (Indian Institute of Technology Mandi and Indian Institute of Technology Kanpur).
 
-Agents of three kinds move at constant speed in an open plane. Each agent perceives six partners, chosen in proportion to how similar they are to it, and holds their headings and bearings in one perceptual state. The bearing of a partner of another kind enters with a minus sign. The agent draws its next heading from the squared perceptual state (Born rule). With these two ingredients the kinds sort into single-kind subgroups while the flock stays together.
+Agents of three kinds move at constant speed in an open plane. Each agent perceives six partners, chosen in proportion to how similar they are to it, and holds their headings and bearings in one perceptual state. The bearing of a partner of another kind enters with a minus sign. The agent draws its next heading from the squared perceptual state (Born rule). With these two ingredients the kinds segregate into single-kind clusters while the flock stays together.
 
 ## What is here
 
@@ -60,14 +60,14 @@ Set the number of cores with `N_JOBS`, for example `N_JOBS=8 python checks/subgr
 | Figure 9 (long runs) | Section 13 |
 | Vicsek-like limit (Section 3.4) | Section 15 |
 | Every number quoted in the text | Section 16, `output/numbers_for_manuscript.txt` |
-| Lopsided draw (Section 3.3) | `checks/lopsided_draw.py` |
+| Shift of the draw away from the other kind (Section 3.3) | `checks/lopsided_draw.py` |
 | Drift of the subgroups (Section 5.5) | `checks/subgroup_gaps.py` |
 | Choice of the measures (Appendix B) | `checks/measures_k.py` |
 | Closed forms and worked example (Appendices C, D) | `checks/appendix_math.py` |
 
 ## Seeds
 
-Tables 2 and 3 use seeds 3000–3029 (the same 30 starting states for every case). The other sweeps use seeds 2000–2019, and the range-of-sight runs start at 4000. All seeds are set in Section 1 of the notebook.
+Tables 2, 3 and 4 use seeds 3000–3029 (the same 30 starting states for every case). The other sweeps use seeds 2000–2019, and the range-of-sight runs start at 4000. All seeds are set in Section 1 of the notebook.
 
 ## Citation
 
