@@ -2,6 +2,8 @@
 
 Code for the paper *Segregation with cohesion in mixed flocks from interfering perceptual cues*, by Mayank Chaurasiya, Ayush Agrawal, Chirayush Mohanty and Laxmidhar Behera (Indian Institute of Technology Mandi and Indian Institute of Technology Kanpur).
 
+Archived on Zenodo, with the output of every run and the video: https://doi.org/10.5281/zenodo.23283537
+
 Agents of three kinds move at constant speed in an open plane. Each agent perceives six partners, chosen in proportion to how similar they are to it, and holds their headings and bearings in one perceptual state. The bearing of a partner of another kind enters with a minus sign. The agent draws its next heading from the squared perceptual state (Born rule). With these two ingredients the kinds segregate into single-kind clusters while the flock stays together.
 
 ## What is here
