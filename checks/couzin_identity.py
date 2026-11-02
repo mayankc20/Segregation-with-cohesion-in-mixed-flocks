@@ -61,10 +61,10 @@ def run(c, dro, dra, seed, T=8000, N=240, G=3, every=50):
                 Phi=float(last[:, 3].mean()), C_end=float(rec[-1, 2]), M_end=float(rec[-1, 1]))
 
 if __name__ == "__main__":
-    # c from 1 to -1 at the zone widths chosen with identity off (dro = 14, dra = 6), 10 runs each (about 30 min on 4 cores)
+    # c from 1 to -1 at the zone widths chosen with identity off (dro = 14, dra = 6), 30 runs each (about 1.5 hours on 4 cores)
     import pandas as pd
     from joblib import Parallel, delayed
     CS = [1.0, 0.5, 0.25, 0.0, -0.02, -0.05, -0.1, -0.25, -0.5, -1.0]
-    d = pd.DataFrame(Parallel(n_jobs=fm.N_JOBS)(delayed(run)(c, 14, 6, s) for c in CS for s in range(3000, 3010)))
+    d = pd.DataFrame(Parallel(n_jobs=fm.N_JOBS)(delayed(run)(c, 14, 6, s) for c in CS for s in range(3000, 3030)))
     d["one_group"] = d.C_end > 0.9; d["below_005"] = d.M < 0.05
     print(d.groupby("c").agg(M=("M", "mean"), below_005=("below_005", "sum"), Phi=("Phi", "mean"), one_group=("one_group", "sum")).round(2).to_string())

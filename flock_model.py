@@ -150,7 +150,7 @@ def step(X, theta, mem, kind, S, case, rng, grid, p):
         free = visible.copy(); free[rows, idx] = False
     if n - k_near:
         with np.errstate(divide="ignore"):
-            score = np.where(free, -rng.standard_exponential((N, N)) / S, -np.inf)
+            score = np.where(free, -rng.standard_exponential((N, N)) * dist ** case.get("alpha", 0.0) / S, -np.inf)
         idx = np.argpartition(-score, n - k_near - 1, axis=1)[:, :n - k_near]
         chosen.append(idx); found.append(np.isfinite(np.take_along_axis(score, idx, 1)))
     partners = np.concatenate(chosen, 1)
