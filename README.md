@@ -10,7 +10,7 @@ Agents of three kinds move at constant speed in an open plane. Each agent percei
 
 | File | What it does |
 |---|---|
-| `paper.ipynb` | Every simulation, table and figure of the paper, in order. Start here. |
+| `paper.ipynb` | Every simulation, table and figure of the paper, in order, including the visual cone, the tuned vector sums, the zonal model and the distance weighting (Sections 16–19). Start here. |
 | `flock_model.py` | The model as a Python module (the same code as Sections 1–4 of the notebook), used by the scripts in `checks/`. |
 | `checks/lopsided_draw.py` | Section 3.3: how much the minus sign shifts the draw away from the other kind. |
 | `checks/subgroup_gaps.py` | Section 5.5: whether the subgroups drift apart over time (signed vector sum, vector sum with other kinds' bearings ignored, full model). |
@@ -37,7 +37,7 @@ pip install -r requirements.txt
 
 **Full run.** Set `QUICK_TEST = False`, set `N_JOBS` to the number of CPU cores to use, and run all cells. All tables, figures and data go to `output/`.
 
-One run of 5,000 steps takes about 25 s for 240 agents, 80 s for 480 and 4 min for 960, on one core. The whole notebook is about 20 core-hours, so about 2 hours on 10 cores. Every run is saved as soon as it finishes, under a key made from all of its parameters, so the notebook can be stopped and restarted and only what is missing is computed. Section 7 (the large flocks) is half of the time; to shorten it, remove the entry `960` from `LIMIT_PLAN`.
+One run of 5,000 steps takes about 25 s for 240 agents, 80 s for 480 and 4 min for 960, on one core. The whole notebook is about 40 core-hours, so about 4 hours on 10 cores. Every run is saved as soon as it finishes, under a key made from all of its parameters, so the notebook can be stopped and restarted and only what is missing is computed. Section 7 (the large flocks) is about a quarter of the time; to shorten it, remove the entry `960` from `LIMIT_PLAN`.
 
 **Checks.** From the repository folder:
 
@@ -69,14 +69,14 @@ Set the number of cores with `N_JOBS`, for example `N_JOBS=8 python checks/subgr
 | Figure 8, Appendix E (perception strength) | Section 12 |
 | Figure 9 (long runs) | Section 13 |
 | Vicsek-like limit (Section 3.4) | Section 15 |
-| Every number quoted in the text | Section 16, `output/numbers_for_manuscript.txt` |
+| Every number quoted in the text | Section 20, `output/numbers_for_manuscript.txt` |
 | Shift of the draw away from the other kind (Section 3.3) | `checks/lopsided_draw.py` |
 | Drift of the subgroups (Section 5.5) | `checks/subgroup_gaps.py` |
 | Choice of the measures (Appendix B) | `checks/measures_k.py` |
-| Width of the visual cone (Section 3.8, table 5) | `checks/visual_cone.py` |
-| Vector sums at other settings (ESM table S1) | `checks/vector_tuning.py` |
-| Zonal model with identity (ESM table S2) | `checks/couzin_identity.py` |
-| Partners weighted by distance (Section 4) | `checks/distance_decay.py` |
+| Width of the visual cone (Section 3.8, table 5) | Section 16 (or `checks/visual_cone.py`) |
+| Vector sums at other settings (ESM table S1) | Section 17 (or `checks/vector_tuning.py`) |
+| Zonal model with identity (ESM table S2) | Section 18 (or `checks/couzin_identity.py`) |
+| Partners weighted by distance (Section 4) | Section 19 (or `checks/distance_decay.py`) |
 | Closed forms and worked example (Appendices C, D) | `checks/appendix_math.py` |
 
 ## Seeds
