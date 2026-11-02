@@ -15,6 +15,10 @@ Agents of three kinds move at constant speed in an open plane. Each agent percei
 | `checks/lopsided_draw.py` | Section 3.3: how much the minus sign shifts the draw away from the other kind. |
 | `checks/subgroup_gaps.py` | Section 5.5: whether the subgroups drift apart over time (signed vector sum, vector sum with other kinds' bearings ignored, full model). |
 | `checks/measures_k.py` | Appendix B: the mixing entropy for 5, 10, 20 and 40 neighbours, and cohesion for other link distances. |
+| `checks/visual_cone.py` | Section 3.8: how wide the visual cone must be (90° to 330°). |
+| `checks/vector_tuning.py` | ESM table S1: the vector sums with a weaker minus sign and other weights of headings. |
+| `checks/couzin_identity.py` | ESM table S2: the zonal model of Couzin et al. (2002) in open space with the attraction to other kinds scaled by c. |
+| `checks/distance_decay.py` | Section 4: the full model when the weight of a partner falls with its distance. |
 | `checks/appendix_math.py` | Appendices C and D: the closed forms of the overlaps against numerical integrals, and the worked example. |
 
 ## Install
@@ -42,6 +46,10 @@ python checks/appendix_math.py        # a few seconds
 python checks/lopsided_draw.py 60     # a few minutes
 python checks/subgroup_gaps.py        # about 10 minutes on 4 cores
 python checks/measures_k.py           # about 10 minutes on 4 cores
+python checks/visual_cone.py          # about 4.5 hours on 4 cores
+python checks/vector_tuning.py        # about 6 hours on 4 cores
+python checks/couzin_identity.py      # about 1.5 hours on 4 cores
+python checks/distance_decay.py       # about 1 hour on 4 cores
 ```
 
 Set the number of cores with `N_JOBS`, for example `N_JOBS=8 python checks/subgroup_gaps.py`.
@@ -65,11 +73,15 @@ Set the number of cores with `N_JOBS`, for example `N_JOBS=8 python checks/subgr
 | Shift of the draw away from the other kind (Section 3.3) | `checks/lopsided_draw.py` |
 | Drift of the subgroups (Section 5.5) | `checks/subgroup_gaps.py` |
 | Choice of the measures (Appendix B) | `checks/measures_k.py` |
+| Width of the visual cone (Section 3.8, table 5) | `checks/visual_cone.py` |
+| Vector sums at other settings (ESM table S1) | `checks/vector_tuning.py` |
+| Zonal model with identity (ESM table S2) | `checks/couzin_identity.py` |
+| Partners weighted by distance (Section 4) | `checks/distance_decay.py` |
 | Closed forms and worked example (Appendices C, D) | `checks/appendix_math.py` |
 
 ## Seeds
 
-Tables 2, 3 and 4 use seeds 3000–3029 (the same 30 starting states for every case). The other sweeps use seeds 2000–2019, and the range-of-sight runs start at 4000. All seeds are set in Section 1 of the notebook.
+Tables 2, 3 and 4 use seeds 3000–3029 (the same 30 starting states for every case). The sweeps of attention, noise and single quantities use seeds 2000–2029, the cone, vector-sum, zonal-model and distance checks use 3000–3029, and the range-of-sight runs start at 4000. All seeds are set in Section 1 of the notebook.
 
 ## Citation
 
